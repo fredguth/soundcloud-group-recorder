@@ -11,5 +11,8 @@ $ ->
   params = new SC.URI(window.location.toString(), {decodeQuery: true}).query
   GR.groupUrl = params.url
   
+  SC.get GR.groupUrl, (group) ->
+    $(".groupLink").text(group.name).attr("href", group.permalink_url)
+
   SC.get GR.groupUrl + "/tracks", {limit: 5}, (groups) ->
     $( "#trackTmpl" ).tmpl(groups).appendTo(".track-list ol");

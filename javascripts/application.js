@@ -13,6 +13,9 @@ $(function() {
     decodeQuery: true
   }).query;
   GR.groupUrl = params.url;
+  SC.get(GR.groupUrl, function(group) {
+    return $(".groupLink").text(group.name).attr("href", group.permalink_url);
+  });
   return SC.get(GR.groupUrl + "/tracks", {
     limit: 5
   }, function(groups) {
