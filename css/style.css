@@ -1,0 +1,573 @@
+/* @group Reset */
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* @end */
+
+body {
+	margin: 50px 70px;
+	
+	color: rgb(51,51,51);
+	font: 11px "Lucida Grande", Lucida, Arial, sans-serif;
+}
+
+#widget {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	background: rgb(245, 245, 245);
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-o-border-radius: 2px;
+	-ms-border-radius: 2px;
+	border-radius: 2px;
+	border: 1px solid rgb(229, 229, 229);
+}
+
+/* @group Global library styles */
+
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { *zoom: 1; }
+
+a {
+	color: rgb(51, 51, 51);
+	text-decoration:none;
+}
+
+a:focus {
+	color: rgb(51, 51, 51);	
+}
+
+a:hover, a:active {
+	outline: 0;
+	color: rgb(51, 51, 51);	
+}
+
+a.disabled {
+	color: rgb(170,170,170);	
+}
+
+a.disabled:hover {
+	cursor: default;
+}
+
+
+
+.button {
+	color: rgb(51, 51, 51);
+	background: rgb(229, 229, 229);
+	background: -moz-linear-gradient(top,  rgb(255,255,255) 0%, rgb(229,229,229) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(255,255,255)), color-stop(100%,rgb(229,229,229)));
+	background: -webkit-linear-gradient(top,  rgb(255,255,255) 0%,rgb(229,229,229) 100%);
+	background: -o-linear-gradient(top,  rgb(255,255,255) 0%,rgb(229,229,229) 100%);
+	background: -ms-linear-gradient(top,  rgb(255,255,255) 0%,rgb(229,229,229) 100%);
+	background: linear-gradient(top,  rgb(255,255,255) 0%,rgb(229,229,229) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 );	
+	border: 1px solid rgb(204, 204, 204);
+	-webkit-border-radius: 1em;
+	-moz-border-radius: 1em;
+	-o-border-radius: 1em;
+	-ms-border-radius: 1em;
+	border-radius: 1em;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 11px;
+	height: 17px;
+	line-height: 17px;
+	margin: 0;
+	overflow: visible;
+	padding: 0 10px;
+	position: relative;
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding;
+	background-clip: padding-box;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	-webkit-transition: border-color .2s linear, color .2s linear, -webkit-box-shadow .3s linear;
+	-moz-transition: border-color .2s linear, color .2s linear, -moz-box-shadow .3s linear;
+	transition: border-color .2s linear, color .2s linear, box-shadow .3s linear;
+}
+
+.button:hover {
+	border-color: rgb(179, 179, 179);
+	color: rgb(17, 17, 17);
+	-webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);	
+}
+
+.button:active {
+	background: rgb(245,245,245);
+	background: -moz-linear-gradient(top,  rgb(245,245,245) 0%, rgb(255,255,255) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(245,245,245)), color-stop(100%,rgb(255,255,255)));
+	background: -webkit-linear-gradient(top,  rgb(245,245,245) 0%,rgb(255,255,255) 100%);
+	background: -o-linear-gradient(top,  rgb(245,245,245) 0%,rgb(255,255,255) 100%);
+	background: -ms-linear-gradient(top,  rgb(245,245,245) 0%,rgb(255,255,255) 100%);
+	background: linear-gradient(top,  rgb(245,245,245) 0%,rgb(255,255,255) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endolorstr='#ffffff',GradientType=0 );
+}
+
+.button.disabled {
+	color: rgb(170, 170, 170);
+	border-color: rgb(204, 204, 204);	
+	-webkit-box-shadow: none;
+  	-moz-box-shadow: none;
+  	box-shadow: none;
+	background: rgb(229, 229, 229);
+	background: -moz-linear-gradient(top,  rgb(255,255,255) 0%, rgb(229,229,229) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(255,255,255)), color-stop(100%,rgb(229,229,229)));
+	background: -webkit-linear-gradient(top,  rgb(255,255,255) 0%,rgb(229,229,229) 100%);
+	background: -o-linear-gradient(top,  rgb(255,255,255) 0%,rgb(229,229,229) 100%);
+	background: -ms-linear-gradient(top,  rgb(255,255,255) 0%,rgb(229,229,229) 100%);
+	background: linear-gradient(top,  rgb(255,255,255) 0%,rgb(229,229,229) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 );
+}
+
+.button.disabled:hover {
+	cursor: default;	
+}
+	
+input {
+	padding: 4px 5px;
+	border: 1px solid rgb(204, 204, 204);
+	color: rgb(102,102,102);
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
+	-ms-border-radius: 3px;
+	border-radius: 3px;
+	outline: none;	
+}
+
+input[disabled] {
+	color: rgb(170, 170, 170);
+	background:rgb(255,255,255);
+}
+
+label {
+	margin-right:4px;
+	padding-top: 7px;
+	color: rgb(64, 64, 64);
+	float:right;
+}
+
+label.disabled {
+	color: rgb(170, 170, 170);
+}
+
+/* @end */
+
+/* @group Recorder styles (top) */
+
+.recorder-wrapper {
+/*	padding: 9px 7px 0 7px;*/
+	border-bottom: 1px solid #e6e6e6;	
+
+}
+.recorder {
+	padding: 9px 9px;
+}
+.recorder .left {
+	width: 45%;
+	float: left;
+}
+
+.recorder .right {
+	width: 52%;
+	float: right;
+}
+
+.widget-title {
+	font-weight:bold;
+	margin-top:10px;
+	margin-left:10px;
+	float:left;
+}
+
+.rec-wave-container {
+	height:30px;
+	padding-left:45px;
+	padding-right:19px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width:100%;
+	position:relative;
+}
+
+.reset{
+	color: rgba(51,51,51,0.5);
+	display:block;
+	position:absolute;
+	right: 0px;
+	line-height:11px;
+	font-size:13px;
+	top: 8px;
+	font-weight:bold;	
+	display:block;
+	
+}
+
+.hover .reset{
+	color: rgb(51,51,51);
+}
+
+.rec-wave {
+	width:100%;
+	height:100%;
+	margin-top:2px;
+	background-image: url(../img/rec-wave.png);	
+}
+
+.rec-btn-container {
+	position: relative;
+	width: 34px;
+	height: 34px;
+	float: left;
+}
+
+.rec-btn {
+	width:100%;
+	z-index:1000;
+	height: 100%;
+	position: relative;
+}
+
+.rec-btn:hover {
+	cursor: pointer;
+}
+
+.svg-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: block;
+}
+
+.svg-control-bg {
+	fill: rgb(250,67,0);
+	fill: rgb(255,80,22);
+}
+
+.svg-control-overlay {
+	/* fill:url(#svg-gradient) FF bug forces inline css*/
+	opacity:0.2;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.hover .svg-control-overlay {
+	opacity:1;
+}
+
+.control {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	-moz-background-size: 100% 100%;
+	-o-background-size: 100% 100%;
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+	display: block;
+}
+
+.play-control {
+	display:none;
+	background-image: url(../img/btn-play.png);	
+}
+
+.pause-control {
+	display:none;
+	background-image: url(../img/btn-pause.png);	
+}
+
+.record-control {
+
+	background-image: url(../img/btn-record.png);	
+}
+
+.share.button {
+	margin-top:7px;
+	float: right;
+}
+
+.title-container {
+	height:30px;
+	padding-right:65px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width:100%;
+}
+
+.title {
+	margin-top:3px;
+	width:100%;
+	height:100%;
+}
+
+.title input {
+	float: right;
+	width: 70%;
+	max-width:250px;
+}
+
+/* @end */
+
+/* @group Track list (middle) */
+
+.track-list {
+	border-top: 1px solid white;
+	border-bottom: 1px solid #e6e6e6;
+	padding: 9px 8px;
+}
+
+.recorded-track .track-list {
+	padding-top:8px;
+}
+
+.track {
+	padding:6px 8px;
+}
+
+.track:nth-child(odd) {
+	background: rgb(239, 239, 239);
+}
+
+.track.hover {
+	cursor:pointer;
+}
+
+.track.playing {
+	background: rgb(250,67,0);
+	background: rgb(255,76,0);
+}
+
+.small-control-icon {
+	width: 8px;
+	height: 11px;
+	float:left;
+	margin-right:8px;
+	margin-top: 1px;
+	background: url(../img/controls-small.png) 0 0;	
+}
+
+.playing .small-control-icon {
+	background-position:0 11px;
+}
+
+.playing.hover .small-control-icon {
+	background-position:0 11px;
+}
+
+.hover .small-control-icon {
+	background-position:0 22px;
+}
+
+.playing .small-control-icon:hover {
+	opacity:0.8;
+	background-position:0 11px;
+}
+
+.playing .wave-container {
+	height: 13px;
+	width:100%;
+	padding-left:16px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.playing .wave{
+	height:100%;
+	width:100%;
+	background: url(../img/wave.png);	
+}
+
+.track-title, .track-user  {
+	font-weight:bold;
+}
+
+.track-time {
+	color: rgb(151,151,151);
+}
+
+.hover .track-time{
+	color: rgb(250,67,0);
+	color: rgb(255,76,0);	
+}
+
+.hover .track-details {
+	color: rgb(250,67,0);
+	color: rgb(255,76,0);
+}
+
+.playing .track-details {
+	display:none;
+}
+
+.track-stats {
+	float:right;
+	color: rgb(151,151,151);
+	position:relative;
+}
+
+.hover .track-stats {
+	color: rgb(51,51,51);
+}
+
+.playback-icon {
+	width:10px;
+	height: 10px;
+	display:block;
+	position: absolute;
+	top: 2px;
+	left:-14px;
+	opacity: 0.3;	
+	background: url(../img/icons.png) 10px 10px;	
+}	
+
+.hover .playback-icon {
+	opacity: 1;
+}	
+
+.track.recorded {
+	background: rgb(245, 245, 245);
+	border-top: 1px solid rgb(230,230,230);
+	margin: 0 8px;
+	padding-right:8px;
+	padding-left:8px;
+
+}
+
+
+.track.recorded.playing {
+	background: rgb(250,67,0);
+	background: rgb(255,76,0);
+}
+
+.track.recorded .status {
+	display:none;
+}
+
+.track.recorded.uploading .status {
+	color:rgb(151,151,151);
+	float:right;
+	font-style:italic;
+	display:inline;
+}
+
+.track.uploading .track-stats {
+	display:none;
+}
+
+.track.uploading .small-control-icon {
+	opacity: 0.4;
+}
+
+.hover.track.uploading .small-control-icon {
+	background-position:0 0px;
+}
+
+.hover.track.uploading {
+	cursor:default;
+}	
+
+.hover.track.uploading .track-details {
+	color: rgb(51,51,51);
+}
+
+.hover.track.uploading .track-time{
+	color: rgb(151,151,151);
+}
+
+/* @end */
+
+/* @group Footer */
+
+
+.footer {
+	padding: 8px 8px;
+	border-top: 1px solid rgb(255,255,255);
+	position: relative;
+}
+
+.more {
+	font-weight:bold;
+}
+
+.more a {
+	text-decoration:underline;
+}
+
+a.soundcloud {
+	background: url(../img/soundcloud.png);
+	width:95px;
+	height:12px;
+	opacity:0.7;		
+	display:block;
+	position:absolute;
+	right: 7px;
+	top: 10px;
+}
+
+a.soundcloud:hover {
+	opacity:1;
+}
+
+/* @end */
