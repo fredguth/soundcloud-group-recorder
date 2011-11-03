@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title></title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <link rel="stylesheet" href="css/style.css">
+  
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script src="javascripts/jquery.tmpl.min.js"></script>
+  <script src="http://connect.soundcloud.com/sdk.js"></script>
+  <script src="javascripts/application.js"></script>
+  
+  <script id="job-status-tmpl" type="text/x-jquery-tmpl">
+    <li class="track">
+      <span class="small-control-icon"></span>
+      <div class="wave-container"><div class="wave"></div></div>
+      <div class="track-details">
+        <span class="track-title">Total B.S.</span> by <span class="track-user">R_co</span> <span class="track-time">1.01</span>
+        <span class="status"></span>
+        <span class="track-stats">
+           <span class="playback-icon"></span>
+         209</span>
+      </div>
+    </li>
+  </script>
+  
+  
+</head>
+
+<body>
+  
+  <div id="widget">
+    <div class="recorder-wrapper clearfix">      
+      <div class="recorder clearfix">
+      <div class="left">
+        <div class="rec-btn-container">
+          <div class="rec-btn">
+            <svg class="svg-container">
+              <defs>
+                <linearGradient id="svg-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:rgb(0,0,0);stop-opacity:0"></stop>
+                  <stop offset="100%" style="stop-color:rgb(0,0,0);stop-opacity:0.15"></stop>
+                </linearGradient>
+              </defs>
+              <circle class="svg-control-bg" r="50%" cx="50%" cy="50%"></circle>
+              <circle class="svg-control-overlay" style="fill:url(#svg-gradient)" r="50%" cx="50%" cy="50%"></circle>
+            </svg>
+            <div class="control play-control"></div>
+            <div class="control pause-control"></div>
+            <div class="control record-control"></div>            
+          </div>
+        </div>
+        <div class="widget-title"><a href="#">Join the discussion</a></div>
+        <div style="display:none" class="rec-wave-container">
+          <a class="reset" href="#" title="Reset">×</a>
+          <div class="rec-wave"></div>
+        </div>
+      </div>
+      
+      <div class="right">
+        <a class="button share disabled" href="#">Share</a>      
+        <div class="title-container">
+        <div class="title">
+          <input disabled="disabled" name="title" id="title" type="text" value="Thoughts on Radiolab">
+          <label class="disabled" for="title">Title:</label>
+        </div>
+        </div>
+      </div>
+      </div>
+
+      
+      <div style="display:none" class="uploaded-track">
+        <ol class="list">
+          <li class="track recorded">
+            <span class="small-control-icon"></span>
+            <div class="wave-container"><div class="wave"></div></div>
+            <div class="track-details">
+              <span class="track-title">Thoughts on Radiolab</span> by <span class="track-user">bninja</span> <span class="track-time">1.01</span>
+              <span class="status">Processing…</span>
+              <span class="track-stats">
+                <span class="playback-icon"></span>
+              0</span>          
+            </div>
+          </li>
+        </ol>
+      </div>
+    
+    </div>
+
+    <div class="track-list">
+      <ol class="list"></ol>
+    </div>
+
+    <div class="footer">
+      <span class="more">More sounds from the group <a href="#">Radiolab</a></span>
+      <a class="soundcloud" href="#"></a>
+    </div>
+    
+  </div>
+
+</body>
+</html>
