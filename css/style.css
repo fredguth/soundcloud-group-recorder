@@ -420,10 +420,16 @@ a.trackLink:hover .small-control-icon {
 	background-position:0 11px;
 }
 
+.wave-container {
+  display: none;
+}
+
 .playing .wave-container {
 	height: 13px;
 	width:100%;
 	padding-left:16px;
+	position: relative;
+	display: block;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -432,6 +438,7 @@ a.trackLink:hover .small-control-icon {
 .playing .wave{
 	height:100%;
 	width:100%;
+	position: absolute;
 	background: url(../img/wave.png);	
 }
 
