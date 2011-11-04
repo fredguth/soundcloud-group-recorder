@@ -268,7 +268,6 @@ label.disabled {
 	width:100%;
 	height:100%;
 	margin-top:2px;
-	background-image: url(../img/rec-wave.png);	
 }
 
 .rec-btn-container {
@@ -439,7 +438,6 @@ a.trackLink:hover .small-control-icon {
 	height:100%;
 	width:100%;
 	position: absolute;
-	background: url(../img/wave.png);	
 }
 
 .track-title, .track-user  {

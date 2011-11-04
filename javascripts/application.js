@@ -1,4 +1,4 @@
-var CLIENT_ID, GR;
+var CLIENT_ID, GR, setRecorded, setTimer;
 CLIENT_ID = "7b3dc769ad5c179d5280de288dba52a9";
 GR = {
   groupId: null,
@@ -70,5 +70,74 @@ $(".trackLink").live("click", function(e) {
       auto_play: true
     });
   }
+  return e.preventDefault();
+});
+setRecorded = function() {
+  $(".play-control").show().siblings().hide();
+  $('.title label, .share').removeClass('disabled');
+  return $('.title input').attr('disabled', false);
+};
+setTimer = function(ms) {
+  return $(".timer").text(SC.Helper.millisecondsToHMS(ms));
+};
+$(".record-control, .recordLink").live("click", function(e) {
+  setTimer(0);
+  $(".widget-title").hide();
+  return SC.record({
+    start: function() {
+      SCWaveform.reset();
+      $(".rec-wave-container").show();
+      return $(".pause-control").show().siblings().hide();
+    },
+    progress: function(ms, level) {
+      setTimer(ms);
+      return SCWaveform.draw(ms / 1000, level);
+    }
+  });
+});
+$(".pause-control").live("click", function(e) {
+  $(".reset").show();
+  SC.recordStop();
+  return setRecorded();
+});
+$(".play-control").live("click", function(e) {
+  setTimer(0);
+  SC.recordPlay({
+    progress: function(ms) {
+      var canvas, counterX, ctx, ctxHeight, ctxWidth, density, duration, rel, wfWidth;
+      setTimer(ms);
+      density = 500;
+      canvas = SCgetCanvas($('canvas.scrubber'));
+      ctx = canvas.getContext("2d");
+      ctxHeight = parseInt(ctx.canvas.height, 10) * 0.5;
+      ctxWidth = parseInt(ctx.canvas.width, 10);
+      wfWidth = ctxWidth;
+      counterX = wfWidth;
+      duration = 0;
+      if (recordingDuration) {
+        rel = Math.round((ms / recordingDuration) * wfWidth);
+      } else {
+        rel = 0;
+      }
+      ctx.clearRect(0, 0, ctxWidth, ctxHeight);
+      ctx.canvas.width = ctxWidth;
+      if (rel > 0) {
+        ctx.fillStyle = 'rgba(255, 102, 0, 0.3)';
+        ctx.fillRect(0, 10, rel, ctxHeight);
+        ctx.fillStyle = 'rgba(255, 102, 0, 1)';
+        return ctx.fillRect(rel, 0, 1, ctxHeight);
+      }
+    },
+    finished: setRecorded
+  });
+  return $(".pause-control").show().siblings().hide();
+});
+$("a.reset").live("click", function(e) {
+  SC.recordStop();
+  $(".record-control").show().siblings().hide();
+  $(".rec-wave-container").hide();
+  $(".widget-title").show();
+  $(this).hide();
+  $(".timer").html('<a href="#" class="recordLink">Join the discussion</a>');
   return e.preventDefault();
 });

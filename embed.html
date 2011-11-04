@@ -14,7 +14,8 @@
   <script src="javascripts/jquery.tmpl.min.js"></script>
   <script src="//connect.soundcloud.com/sdk.js"></script>
   <script src="javascripts/application.js"></script>
-  
+  <script src="javascripts/waveform.js"></script>
+
   <script id="trackTmpl" type="text/x-jquery-tmpl">
     <li class="track">
       <a href="${permalink_url}" class="trackLink">
@@ -52,15 +53,19 @@
               <circle class="svg-control-bg" r="50%" cx="50%" cy="50%"></circle>
               <circle class="svg-control-overlay" style="fill:url(#svg-gradient)" r="50%" cx="50%" cy="50%"></circle>
             </svg>
-            <div class="control play-control"></div>
-            <div class="control pause-control"></div>
-            <div class="control record-control"></div>            
+            <div>
+              <div class="control play-control"></div>
+              <div class="control pause-control"></div>
+              <div class="control record-control"></div>
+            </div>
           </div>
         </div>
-        <div class="widget-title"><a href="#">Join the discussion</a></div>
+        <div class="widget-title timer"><a href="#" class="recordLink">Join the discussion</a></div>
         <div style="display:none" class="rec-wave-container">
-          <a class="reset" href="#" title="Reset">×</a>
-          <div class="rec-wave"></div>
+          <a class="reset" href="#" title="Reset" style="display: none;">x</a>
+          <canvas class="levels rec-wave"></canvas>
+          <canvas class="scrubber"></canvas>
+          
         </div>
       </div>
       
