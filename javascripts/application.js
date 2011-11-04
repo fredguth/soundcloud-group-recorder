@@ -1,5 +1,6 @@
-var CLIENT_ID, GR, setRecorded, setTimer;
-CLIENT_ID = "7b3dc769ad5c179d5280de288dba52a9";
+var CLIENT_ID, GR, REDIRECT_URI, setRecorded, setTimer;
+CLIENT_ID = "1ba7ea8a06c6bb7454a52fb018449792";
+REDIRECT_URI = "http://localhost:9999/callback.html";
 GR = {
   groupId: null,
   groupUrl: null,
@@ -139,5 +140,30 @@ $("a.reset").live("click", function(e) {
   $(".widget-title").show();
   $(this).hide();
   $(".timer").html('<a href="#" class="recordLink">Join the discussion</a>');
+  return e.preventDefault();
+});
+$("a.share").live("click", function(e) {
+  SC.connect({
+    redirect_uri: REDIRECT_URI,
+    connected: function() {
+      var trackParams;
+      trackParams = {
+        track: {
+          title: $("#title").val(),
+          sharing: "public"
+        }
+      };
+      return SC.recordUpload(trackParams, function(track) {
+        console.log(track);
+        console.log("contribute to group");
+        $("#trackTmpl").tmpl(track).appendTo(".recorder-wrapper").addClass("uploading");
+        $("#widget").addClass("recorded-track");
+        return SC.put(GR.groupUrl + "/contributions/" + track.id, function(track) {
+          console.log('contributed');
+          return console.log(arguments);
+        });
+      });
+    }
+  });
   return e.preventDefault();
 });

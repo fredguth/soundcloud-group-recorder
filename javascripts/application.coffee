@@ -1,4 +1,5 @@
-CLIENT_ID = "7b3dc769ad5c179d5280de288dba52a9"
+CLIENT_ID    = "1ba7ea8a06c6bb7454a52fb018449792"
+REDIRECT_URI = "http://localhost:9999/callback.html"
 
 GR =
   groupId: null
@@ -131,5 +132,23 @@ $("a.reset").live "click", (e) ->
   $(".widget-title").show()
   $(this).hide();
   $(".timer").html('<a href="#" class="recordLink">Join the discussion</a>')
-
+  e.preventDefault();
+  
+$("a.share").live "click", (e) -> 
+  SC.connect
+    redirect_uri: REDIRECT_URI
+    connected: () ->
+      trackParams = 
+        track:
+          title: $("#title").val()
+          sharing: "public"
+      
+      SC.recordUpload trackParams, (track) ->
+        console.log(track)
+        console.log("contribute to group")
+        $("#trackTmpl").tmpl(track).appendTo(".recorder-wrapper").addClass("uploading")
+        $("#widget").addClass("recorded-track")
+        SC.put GR.groupUrl + "/contributions/" + track.id, (track) ->
+          console.log('contributed')
+          console.log(arguments)
   e.preventDefault();
