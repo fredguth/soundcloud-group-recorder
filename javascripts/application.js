@@ -135,6 +135,8 @@ $(".play-control").live("click", function(e) {
 });
 $("a.reset").live("click", function(e) {
   SC.recordStop();
+  $(".play-control").show().siblings().hide();
+  $('.share').addClass('disabled');
   $(".record-control").show().siblings().hide();
   $(".rec-wave-container").hide();
   $(".widget-title").show();
