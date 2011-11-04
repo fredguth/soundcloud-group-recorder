@@ -102,8 +102,6 @@ a.disabled:hover {
 	cursor: default;
 }
 
-
-
 .button {
 	color: rgb(51, 51, 51);
 	background: rgb(229, 229, 229);
@@ -260,7 +258,7 @@ label.disabled {
 	
 }
 
-.hover .reset{
+.rec-wave-container:hover .reset{
 	color: rgb(51,51,51);
 }
 
@@ -310,7 +308,7 @@ label.disabled {
 	transition: all 0.3s ease-in-out;
 }
 
-.hover .svg-control-overlay {
+.rec-btn:hover .svg-control-overlay {
 	opacity:1;
 }
 
@@ -408,19 +406,15 @@ label.disabled {
 
 .playing a.trackLink:hover .small-control-icon {
 	background-position:0 11px;
+  opacity:0.8;
 }
 
 a.trackLink:hover .small-control-icon {
 	background-position:0 22px;
 }
 
-.playing .small-control-icon:hover {
-	opacity:0.8;
-	background-position:0 11px;
-}
-
 .wave-container {
-  display: none;
+  display:none;
 }
 
 .playing .wave-container {
@@ -437,7 +431,7 @@ a.trackLink:hover .small-control-icon {
 .playing .wave{
 	height:100%;
 	width:100%;
-	position: absolute;
+	background: rgb(239, 239, 239);
 }
 
 .track-title, .track-user  {
@@ -485,7 +479,7 @@ a.trackLink:hover .playback-icon {
 	opacity: 1;
 }	
 
-.track.recorded {
+.uploaded-track .track {
 	background: rgb(245, 245, 245);
 	border-top: 1px solid rgb(230,230,230);
 	margin: 0 8px;
@@ -495,16 +489,16 @@ a.trackLink:hover .playback-icon {
 }
 
 
-.track.recorded.playing {
+.uploaded-track .track.playing {
 	background: rgb(250,67,0);
 	background: rgb(255,76,0);
 }
 
-.track.recorded .status {
-	display:none;
+.track .status {
+  display:none;
 }
 
-.track.recorded.uploading .status {
+.track.uploading .status {
 	color:rgb(151,151,151);
 	float:right;
 	font-style:italic;
@@ -519,19 +513,19 @@ a.trackLink:hover .playback-icon {
 	opacity: 0.4;
 }
 
-.hover.track.uploading .small-control-icon {
+a.trackLink:hover .track.uploading .small-control-icon {
 	background-position:0 0px;
 }
 
-.hover.track.uploading {
+a.trackLink:hover .track.uploading {
 	cursor:default;
 }	
 
-.hover.track.uploading .track-details {
+a.trackLink:hover .track.uploading .track-details {
 	color: rgb(51,51,51);
 }
 
-.hover.track.uploading .track-time{
+a.trackLink:hover .track.uploading .track-time{
 	color: rgb(151,151,151);
 }
 

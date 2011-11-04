@@ -6,7 +6,7 @@ GR = {
   groupUrl: null,
   drawWaveform: function(canvas, waveformUrl) {
     var color, waveImg;
-    color = [255, 0, 0];
+    color = [255, 76, 0];
     waveImg = new Image();
     waveImg.src = "canvas/wave.png";
     return waveImg.onload = function() {
@@ -15,9 +15,9 @@ GR = {
   },
   drawOverlay: function(imageObj, canvas, color) {
     var context, data, i, imageData, parent;
-    parent = canvas.parentNode;
-    canvas.width = parent.offsetWidth;
-    canvas.height = parent.offsetHeight;
+    parent = $(canvas).parent();
+    canvas.width = parent.width();
+    canvas.height = parent.height();
     context = canvas.getContext("2d");
     context.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
     imageData = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -59,7 +59,7 @@ $(function() {
     return _results;
   });
 });
-$(".trackLink").live("click", function(e) {
+$(".trackLink").live("click", function(e) {  
   var $a, $li;
   $a = $(this);
   $li = $a.closest("li");
@@ -156,7 +156,7 @@ $("a.share").live("click", function(e) {
       return SC.recordUpload(trackParams, function(track) {
         console.log(track);
         console.log("contribute to group");
-        $("#trackTmpl").tmpl(track).appendTo(".recorder-wrapper").addClass("uploading");
+        $("#trackTmpl").tmpl(track).appendTo(".uploaded-track .list").addClass("uploading");
         $("#widget").addClass("recorded-track");
         return SC.put(GR.groupUrl + "/contributions/" + track.id, function(track) {
           console.log('contributed');
