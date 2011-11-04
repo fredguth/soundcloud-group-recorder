@@ -52,8 +52,6 @@ table {
 /* @end */
 
 body {
-	margin: 50px 70px;
-	
 	color: rgb(51,51,51);
 	font: 11px "Lucida Grande", Lucida, Arial, sans-serif;
 }
@@ -372,6 +370,7 @@ label.disabled {
 	border-top: 1px solid white;
 	border-bottom: 1px solid #e6e6e6;
 	padding: 9px 8px;
+	height: 125px;
 }
 
 .recorded-track .track-list {
