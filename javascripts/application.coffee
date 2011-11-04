@@ -6,16 +6,16 @@ GR =
   groupUrl: null
   
   drawWaveform: (canvas, waveformUrl) -> 
-    color = [255, 0, 0]
+    color = [255, 76, 0]
     waveImg = new Image()
     waveImg.src = "canvas/wave.png" #waveformUrl
     waveImg.onload = () ->
       GR.drawOverlay(this, canvas, color)
     
   drawOverlay: (imageObj, canvas, color) ->
-    parent = canvas.parentNode;
-    canvas.width =  parent.offsetWidth;
-    canvas.height = parent.offsetHeight;
+    parent = $(canvas).parent()
+    canvas.width = parent.width()
+   	canvas.height = parent.height()
   
     context = canvas.getContext("2d");
   
@@ -127,6 +127,7 @@ $(".play-control").live "click", (e) ->
   
 $("a.reset").live "click", (e) ->
   SC.recordStop()
+  $('.share').addClass('disabled');
   $(".record-control").show().siblings().hide()
   $(".rec-wave-container").hide()
   $(".widget-title").show()
@@ -135,6 +136,7 @@ $("a.reset").live "click", (e) ->
   e.preventDefault();
   
 $("a.share").live "click", (e) -> 
+  return false if $(this).hasClass("disabled")  
   SC.connect
     redirect_uri: REDIRECT_URI
     connected: () ->
@@ -146,7 +148,7 @@ $("a.share").live "click", (e) ->
       SC.recordUpload trackParams, (track) ->
         console.log(track)
         console.log("contribute to group")
-        $("#trackTmpl").tmpl(track).appendTo(".recorder-wrapper").addClass("uploading")
+        $("#trackTmpl").tmpl(track).appendTo(".uploaded-track .list").addClass("uploading")
         $("#widget").addClass("recorded-track")
         SC.put GR.groupUrl + "/contributions/" + track.id, (track) ->
           console.log('contributed')
