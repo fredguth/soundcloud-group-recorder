@@ -50,7 +50,6 @@ $ ->
       trackLi = $("#trackTmpl").tmpl(track).appendTo(".track-list ol")
       GR.drawWaveform trackLi.find("canvas")[0], track.waveform_url
 
-
 $(".trackLink").live "click", (e) ->
   $a = $(this)
   $li = $a.closest("li")

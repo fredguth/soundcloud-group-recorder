@@ -383,6 +383,7 @@ label.disabled {
 
 .track {
 	padding:6px 8px;
+	height: 13px;
 }
 
 .track:nth-child(odd) {
