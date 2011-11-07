@@ -20,7 +20,7 @@
       <a href="${permalink_url}" class="trackLink">
         <span class="small-control-icon"></span>
         <div class="wave-container">
-          <canvas class="wave"></canvas>
+          <img src="${waveform_url}" class="wave"/>
         </div>
         <div class="track-details">
           <span class="track-title">${title}</span> by <span class="track-user">${user.username}</span> <span class="track-time">${SC.Helper.millisecondsToHMS(duration)}</span>
@@ -57,6 +57,7 @@
             <div>
               <div class="control play-control"></div>
               <div class="control pause-control"></div>
+              <div class="control stop-control"></div>
               <div class="control record-control"></div>
             </div>
           </div>
@@ -65,8 +66,8 @@
         <div style="display:none" class="rec-wave-container">
           <a class="reset" href="#" title="Reset" style="display: none;">x</a>
           <div class="rec-wave">
-            <canvas class="levels"></canvas>
-            <canvas class="scrubber"></canvas>
+            <canvas class="levels" height="30"></canvas>
+            <canvas class="scrubber" height="30"></canvas>
           </div>
         </div>
       </div>

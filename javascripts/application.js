@@ -4,36 +4,7 @@
   REDIRECT_URI = "http://localhost:9999/callback.html";
   GR = {
     groupId: null,
-    groupUrl: null,
-    drawWaveform: function(canvas, waveformUrl) {
-      var color, waveImg;
-      color = [255, 76, 0];
-      waveImg = new Image();
-      waveImg.src = "canvas/wave.png";
-      return waveImg.onload = function() {
-        return GR.drawOverlay(this, canvas, color);
-      };
-    },
-    drawOverlay: function(imageObj, canvas, color) {
-      var context, data, i, imageData, parent;
-      parent = $(canvas).parent();
-      canvas.width = parent.width();
-      canvas.height = parent.height();
-      context = canvas.getContext("2d");
-      context.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
-      imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-      data = imageData.data;
-      i = 0;
-      while (i < data.length) {
-        if (data[i + 3]) {
-          data[i] = color[0];
-          data[i + 1] = color[1];
-          data[i + 2] = color[2];
-        }
-        i += 4;
-      }
-      return context.putImageData(imageData, 0, 0);
-    }
+    groupUrl: null
   };
   $(function() {
     var params;
@@ -45,7 +16,8 @@
     }).query;
     GR.groupUrl = params.url;
     SC.get(GR.groupUrl, function(group) {
-      return $(".groupLink").text(group.name).attr("href", group.permalink_url);
+      $(".groupLink").text(group.name).attr("href", group.permalink_url);
+      return $("#title").val("Thoughts on " + group.name);
     });
     return SC.get(GR.groupUrl + "/tracks", {
       limit: 5
@@ -54,8 +26,7 @@
       _results = [];
       for (_i = 0, _len = tracks.length; _i < _len; _i++) {
         track = tracks[_i];
-        trackLi = $("#trackTmpl").tmpl(track).appendTo(".track-list ol");
-        _results.push(GR.drawWaveform(trackLi.find("canvas")[0], track.waveform_url));
+        _results.push(trackLi = $("#trackTmpl").tmpl(track).appendTo(".track-list ol"));
       }
       return _results;
     });
@@ -89,7 +60,8 @@
       start: function() {
         SCWaveform.reset();
         $(".rec-wave-container").show();
-        return $(".pause-control").show().siblings().hide();
+        SCWaveform.initCanvas();
+        return $(".stop-control").show().siblings().hide();
       },
       progress: function(ms, level) {
         setTimer(ms);
@@ -97,7 +69,8 @@
       }
     });
   });
-  $(".pause-control").live("click", function(e) {
+  $(".stop-control").live("click", function(e) {
+    SCWaveform.finishedDraw();
     $(".reset").show();
     SC.recordStop();
     return setRecorded();
@@ -162,6 +135,7 @@
           console.log(track);
           console.log("contribute to group");
           $("#trackTmpl").tmpl(track).appendTo(".uploaded-track .list").addClass("uploading");
+          $(".list .track").last().remove();
           $("#widget").addClass("recorded-track");
           return SC.put(GR.groupUrl + "/contributions/" + track.id, function(track) {
             console.log('contributed');

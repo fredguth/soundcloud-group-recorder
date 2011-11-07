@@ -5,35 +5,6 @@ GR =
   groupId: null
   groupUrl: null
   
-  drawWaveform: (canvas, waveformUrl) -> 
-    color = [255, 76, 0]
-    waveImg = new Image()
-    waveImg.src = "canvas/wave.png" #waveformUrl
-    waveImg.onload = () ->
-      GR.drawOverlay(this, canvas, color)
-    
-  drawOverlay: (imageObj, canvas, color) ->
-    parent = $(canvas).parent()
-    canvas.width = parent.width()
-   	canvas.height = parent.height()
-  
-    context = canvas.getContext("2d");
-  
-    context.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
-    imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    data = imageData.data;
-
-    i =0 
-    while i < data.length #for (i = 0; i < data.length; i += 4)
-      if (data[i + 3]) # If solid 
-        data[i]     = color[0]; # red
-        data[i + 1] = color[1]; # green
-        data[i + 2] = color[2]; # blue             
-      i += 4
-
-    # overwrite original image
-    context.putImageData(imageData, 0, 0);
-      
 $ ->
   SC.initialize
     client_id: CLIENT_ID
@@ -43,12 +14,12 @@ $ ->
   
   SC.get GR.groupUrl, (group) ->
     $(".groupLink").text(group.name).attr("href", group.permalink_url)
-
+    $("#title").val("Thoughts on " + group.name)
+    
   SC.get GR.groupUrl + "/tracks", {limit: 5}, (tracks) ->
     #$("#trackTmpl").tmpl(tracks).appendTo(".track-list ol")
     for track in tracks
       trackLi = $("#trackTmpl").tmpl(track).appendTo(".track-list ol")
-      GR.drawWaveform trackLi.find("canvas")[0], track.waveform_url
 
 $(".trackLink").live "click", (e) ->
   $a = $(this)
@@ -78,17 +49,20 @@ setTimer = (ms) ->
 
 $(".record-control, .recordLink").live "click", (e) ->
   setTimer(0)
+
   $(".widget-title").hide()
   SC.record
     start: () ->
       SCWaveform.reset() #TODO REMOVE ME
       $(".rec-wave-container").show()
-      $(".pause-control").show().siblings().hide()
+      SCWaveform.initCanvas()
+      $(".stop-control").show().siblings().hide()
     progress: (ms, level) ->
       setTimer(ms)
       SCWaveform.draw(ms / 1000, level);
 
-$(".pause-control").live "click", (e) ->
+$(".stop-control").live "click", (e) ->
+  SCWaveform.finishedDraw()
   $(".reset").show()
   SC.recordStop()
   setRecorded()
@@ -148,6 +122,7 @@ $("a.share").live "click", (e) ->
         console.log(track)
         console.log("contribute to group")
         $("#trackTmpl").tmpl(track).appendTo(".uploaded-track .list").addClass("uploading")
+        $(".list .track").last().remove()
         $("#widget").addClass("recorded-track")
         SC.put GR.groupUrl + "/contributions/" + track.id, (track) ->
           console.log('contributed')
