@@ -150,6 +150,19 @@ SCWaveform = function() {
         reset();
         draw();
       },
+      initCanvas: function (){
+        // Resizes waveform canvas
+        // Ugly, I know. 
+        canvas = $('canvas.levels');
+        parent = canvas.parent();
+        canvas.attr('width', parent.width());
+        canvas.attr('height', parent.height());
+        canvas = $('canvas.scrubber');
+        canvas.attr('width', parent.width());
+        canvas.attr('height', parent.height());
+        wfWidth = parent.width();
+        ctxWidth = parent.width();
+      },
       render: function() {
         this.stop();
         // replace the levels with the interpolated version

@@ -9,7 +9,6 @@
 
   <link rel="stylesheet" href="css/style.css">
   
-
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
   <script src="javascripts/jquery.tmpl.min.js"></script>
   <script src="//connect.soundcloud.com/sdk.js"></script>
@@ -20,7 +19,9 @@
     <li class="track">
       <a href="${permalink_url}" class="trackLink">
         <span class="small-control-icon"></span>
-        <div class="wave-container"><canvas class="wave"></canvas></div>
+        <div class="wave-container">
+          <img src="${waveform_url}" class="wave"/>
+        </div>
         <div class="track-details">
           <span class="track-title">${title}</span> by <span class="track-user">${user.username}</span> <span class="track-time">${SC.Helper.millisecondsToHMS(duration)}</span>
           <span class="status">Processing...</span>
@@ -43,7 +44,7 @@
       <div class="left">
         <div class="rec-btn-container">
           <div class="rec-btn">
-            <svg class="svg-container">
+            <svg class="svg-container" width="32" height="32">
               <defs>
                 <linearGradient id="svg-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
                   <stop offset="0%" style="stop-color:rgb(0,0,0);stop-opacity:0"></stop>
@@ -56,6 +57,7 @@
             <div>
               <div class="control play-control"></div>
               <div class="control pause-control"></div>
+              <div class="control stop-control"></div>
               <div class="control record-control"></div>
             </div>
           </div>
@@ -63,9 +65,10 @@
         <div class="widget-title timer"><a href="#" class="recordLink">Join the discussion</a></div>
         <div style="display:none" class="rec-wave-container">
           <a class="reset" href="#" title="Reset" style="display: none;">x</a>
-          <canvas class="levels rec-wave"></canvas>
-          <canvas class="scrubber"></canvas>
-          
+          <div class="rec-wave">
+            <canvas class="levels" height="30"></canvas>
+            <canvas class="scrubber" height="30"></canvas>
+          </div>
         </div>
       </div>
       
@@ -73,7 +76,7 @@
         <a class="button share disabled" href="#">Share</a>      
         <div class="title-container">
         <div class="title">
-          <input disabled="disabled" name="title" id="title" type="text" value="Thoughts on Radiolab">
+          <input disabled="disabled" name="title" id="title" type="text" value="">
           <label class="disabled" for="title">Title:</label>
         </div>
         </div>
@@ -81,19 +84,8 @@
       </div>
 
       
-      <div style="display:none" class="uploaded-track">
+      <div class="uploaded-track">
         <ol class="list">
-          <li class="track recorded">
-            <span class="small-control-icon"></span>
-            <div class="wave-container"><div class="wave"></div></div>
-            <div class="track-details">
-              <span class="track-title">${title}</span> by <span class="track-user">${user.username}</span> <span class="track-time">${SC.Helper.millisecondsToHMS(duration)}</span>
-              <span class="status"></span>
-              <span class="track-stats">
-                <span class="playback-icon"></span>
-              ${playback_count}</span>          
-            </div>
-          </li>
         </ol>
       </div>
     

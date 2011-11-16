@@ -52,14 +52,18 @@ table {
 /* @end */
 
 body {
-	margin: 50px 70px;
-	
 	color: rgb(51,51,51);
+	position: relative;
 	font: 11px "Lucida Grande", Lucida, Arial, sans-serif;
 }
 
+
+#recorderFlashContainer {
+	top: 35px !important;
+}
 #widget {
 	height: 100%;
+	height: 230px;
 	width: 100%;
 	overflow: hidden;
 	background: rgb(245, 245, 245);
@@ -101,8 +105,6 @@ a.disabled {
 a.disabled:hover {
 	cursor: default;
 }
-
-
 
 .button {
 	color: rgb(51, 51, 51);
@@ -245,6 +247,11 @@ label.disabled {
 	box-sizing: border-box;
 	width:100%;
 	position:relative;
+	z-index: 900;
+}
+
+.scrubber, .levels {
+  position:absolute;
 }
 
 .reset{
@@ -260,7 +267,7 @@ label.disabled {
 	
 }
 
-.hover .reset{
+.rec-wave-container:hover .reset{
 	color: rgb(51,51,51);
 }
 
@@ -303,6 +310,7 @@ label.disabled {
 .svg-control-overlay {
 	/* fill:url(#svg-gradient) FF bug forces inline css*/
 	opacity:0.2;
+  filter: alpha(opacity=20);
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
 	-o-transition: all 0.3s ease-in-out;
@@ -310,8 +318,9 @@ label.disabled {
 	transition: all 0.3s ease-in-out;
 }
 
-.hover .svg-control-overlay {
+.rec-btn:hover .svg-control-overlay {
 	opacity:1;
+  filter: alpha(opacity=100);
 }
 
 .control {
@@ -336,8 +345,12 @@ label.disabled {
 }
 
 .record-control {
-
 	background-image: url(../img/btn-record.png);	
+}
+
+.stop-control {
+	display:none;
+	background-image: url(../img/btn-stop.png);	
 }
 
 .share.button {
@@ -382,6 +395,7 @@ label.disabled {
 
 .track {
 	padding:6px 8px;
+	height: 13px;
 }
 
 .track:nth-child(odd) {
@@ -391,6 +405,7 @@ label.disabled {
 .track.playing { 
 	background: rgb(250,67,0);
 	background: rgb(255,76,0);
+		background: rgb(239,239,239);
 }
 
 .small-control-icon {
@@ -399,6 +414,8 @@ label.disabled {
 	float:left;
 	margin-right:8px;
 	margin-top: 1px;
+	opacity:0.6;
+  filter: alpha(opacity=60);	
 	background: url(../img/controls-small.png) 0 0;	
 }
 
@@ -406,21 +423,23 @@ label.disabled {
 	background-position:0 11px;
 }
 
-.playing a.trackLink:hover .small-control-icon {
-	background-position:0 11px;
-}
-
 a.trackLink:hover .small-control-icon {
-	background-position:0 22px;
+  opacity:0.8;
+  filter: alpha(opacity=80);
 }
 
-.playing .small-control-icon:hover {
-	opacity:0.8;
-	background-position:0 11px;
+.track.uploading .small-control-icon {
+	opacity: 0.4;
+  filter: alpha(opacity=40);
+}
+
+.track.uploading a.trackLink:hover .small-control-icon {
+  opacity:0.4;
+  filter: alpha(opacity=40);
 }
 
 .wave-container {
-  display: none;
+  display:none;
 }
 
 .playing .wave-container {
@@ -437,7 +456,7 @@ a.trackLink:hover .small-control-icon {
 .playing .wave{
 	height:100%;
 	width:100%;
-	position: absolute;
+	background: rgb(255,76,0);
 }
 
 .track-title, .track-user  {
@@ -448,26 +467,22 @@ a.trackLink:hover .small-control-icon {
 	color: rgb(151,151,151);
 }
 
-a.trackLink:hover .track-time{
-	color: rgb(255,76,0);	
-}
-
-a.trackLink:hover .track-details {
-	color: rgb(255,76,0);
-}
-
 .playing .track-details {
 	display:none;
+}
+
+.track a.trackLink:hover .track-details{
+  color: rgb(255,76,0)
+}
+
+.track.uploading a.trackLink:hover .track-details {
+	color: rgb(51,51,51);
 }
 
 .track-stats {
 	float:right;
 	color: rgb(151,151,151);
 	position:relative;
-}
-
-a.trackLink:hover .track-stats {
-	color: rgb(51,51,51);
 }
 
 .playback-icon {
@@ -478,33 +493,33 @@ a.trackLink:hover .track-stats {
 	top: 2px;
 	left:-14px;
 	opacity: 0.3;	
+  filter: alpha(opacity=30);
 	background: url(../img/icons.png) 10px 10px;	
 }	
 
-a.trackLink:hover .playback-icon {
-	opacity: 1;
-}	
 
-.track.recorded {
+.uploaded-track .track {
 	background: rgb(245, 245, 245);
 	border-top: 1px solid rgb(230,230,230);
 	margin: 0 8px;
 	padding-right:8px;
 	padding-left:8px;
-
 }
 
 
-.track.recorded.playing {
-	background: rgb(250,67,0);
-	background: rgb(255,76,0);
+.uploaded-track .track.playing {
+	background: rgb(239,239,239);
 }
 
-.track.recorded .status {
-	display:none;
+.track.playing:hover {
+  background: rgb(239,239,239);
 }
 
-.track.recorded.uploading .status {
+.track .status {
+  display:none;
+}
+
+.track.uploading .status {
 	color:rgb(151,151,151);
 	float:right;
 	font-style:italic;
@@ -515,25 +530,9 @@ a.trackLink:hover .playback-icon {
 	display:none;
 }
 
-.track.uploading .small-control-icon {
-	opacity: 0.4;
-}
-
-.hover.track.uploading .small-control-icon {
-	background-position:0 0px;
-}
-
-.hover.track.uploading {
+.track.uploading a.trackLink:hover  {
 	cursor:default;
 }	
-
-.hover.track.uploading .track-details {
-	color: rgb(51,51,51);
-}
-
-.hover.track.uploading .track-time{
-	color: rgb(151,151,151);
-}
 
 /* @end */
 
@@ -559,6 +558,7 @@ a.soundcloud {
 	width:95px;
 	height:12px;
 	opacity:0.7;		
+  filter: alpha(opacity=70);
 	display:block;
 	position:absolute;
 	right: 7px;
@@ -567,6 +567,7 @@ a.soundcloud {
 
 a.soundcloud:hover {
 	opacity:1;
+  filter: alpha(opacity=100);	
 }
 
 /* @end */
