@@ -1,6 +1,10 @@
 var CLIENT_ID, GR, REDIRECT_URI, setRecorded, setTimer;
 CLIENT_ID = "1ba7ea8a06c6bb7454a52fb018449792";
 REDIRECT_URI = "http://localhost:9999/callback.html";
+
+CLIENT_ID = "7b3dc769ad5c179d5280de288dba52a9";
+REDIRECT_URI = "http://grouprecorder.soundcloudlabs.com/callback.html";
+
 GR = {
   groupId: null,
   groupUrl: null,
