@@ -25,16 +25,23 @@ $(".trackLink").live "click", (e) ->
   $a = $(this)
   $li = $a.closest("li")
 
-  # stop any sound
+  SC.streamStopAll()
 
   if $li.hasClass("playing")
     $li.removeClass("playing")
   else
     $li.addClass("playing").siblings().removeClass("playing")
-    SC.stream($a.attr("href"), {auto_play: true})
+    console.log("streaming ", $a.attr("data-trackId"));
+    $a.find(".wave-progress").width("0%")
+    SC.stream($a.attr("data-trackId"), {
+      autoPlay: true
+      whileplaying: ->
+        $a.find(".wave-progress").width((this.position / this.durationEstimate * 100) + "%")
+      onfinish: ->
+        $li.removeClass("playing")
+    })
 
   e.preventDefault()
-
 
 # RECORDING
 

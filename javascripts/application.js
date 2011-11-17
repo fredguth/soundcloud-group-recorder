@@ -1,4 +1,3 @@
-
 (function() {
   var CLIENT_ID, GR, REDIRECT_URI, setRecorded, setTimer;
   CLIENT_ID = "1ba7ea8a06c6bb7454a52fb018449792";
@@ -36,12 +35,21 @@
     var $a, $li;
     $a = $(this);
     $li = $a.closest("li");
+    SC.streamStopAll();
     if ($li.hasClass("playing")) {
       $li.removeClass("playing");
     } else {
       $li.addClass("playing").siblings().removeClass("playing");
-      SC.stream($a.attr("href"), {
-        auto_play: true
+      console.log("streaming ", $a.attr("data-trackId"));
+      $a.find(".wave-progress").width("0%");
+      SC.stream($a.attr("data-trackId"), {
+        autoPlay: true,
+        whileplaying: function() {
+          return $a.find(".wave-progress").width((this.position / this.durationEstimate * 100) + "%");
+        },
+        onfinish: function() {
+          return $li.removeClass("playing");
+        }
       });
     }
     return e.preventDefault();

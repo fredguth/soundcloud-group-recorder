@@ -295,7 +295,15 @@ label.disabled {
 	cursor: pointer;
 }
 
-.svg-container {
+
+.svg-workaround {
+  width: 32px;
+  height: 32px;
+  background-color: #ff4400;
+  border-radius: 16px;
+}
+
+.svg-container, .svg-workaround {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -387,6 +395,7 @@ label.disabled {
 	border-top: 1px solid white;
 	border-bottom: 1px solid #e6e6e6;
 	padding: 9px 8px;
+	min-height: 125px;
 }
 
 .recorded-track .track-list {
@@ -453,10 +462,16 @@ a.trackLink:hover .small-control-icon {
 	box-sizing: border-box;
 }
 
+.playing .wave-progress {
+  background: rgb(255,76,0);
+  height: 100%;
+  position: absolute;
+  width: 0%;
+}
 .playing .wave{
+  position: absolute;
 	height:100%;
 	width:100%;
-	background: rgb(255,76,0);
 }
 
 .track-title, .track-user  {
