@@ -452,14 +452,14 @@ a.trackLink:hover .small-control-icon {
 }
 
 .playing .wave-container {
-  height: 13px;
-  width:100%;
-  padding-left:16px;
-  position: relative;
-  display: block;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+	height: 13px;
+	width:100%;
+	padding-left:16px;
+	position: relative;
+	display: block;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 .playing .wave-progress {
@@ -471,7 +471,7 @@ a.trackLink:hover .small-control-icon {
 .playing .wave{
   position: absolute;
 	height:100%;
-	width:98%;
+	width:100%;
 }
 
 .track-title, .track-user  {
