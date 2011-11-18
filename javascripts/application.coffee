@@ -1,5 +1,7 @@
 CLIENT_ID    = "1ba7ea8a06c6bb7454a52fb018449792"
 REDIRECT_URI = "http://localhost:9999/callback.html"
+CLIENT_ID    = "7b3dc769ad5c179d5280de288dba52a9"
+REDIRECT_URI = "http://grouprecorder.soundcloudlabs.com/callback.html"
 
 GR =
   groupId: null
@@ -19,8 +21,12 @@ $ ->
   SC.get GR.groupUrl + "/tracks", {limit: 5}, (tracks) ->
     #$("#trackTmpl").tmpl(tracks).appendTo(".track-list ol")
     for track in tracks
-      trackLi = $("#trackTmpl").tmpl(track).appendTo(".track-list ol")
+      trackLi = $("#trackTmpl").tmpl(track).appendTo("ol#groupTracks")
 
+$(".select-all").live "click", (e) ->
+  this.select()
+  return false
+  
 $(".trackLink").live "click", (e) ->
   $a = $(this)
   $li = $a.closest("li")
@@ -31,14 +37,13 @@ $(".trackLink").live "click", (e) ->
     $li.removeClass("playing")
   else
     $li.addClass("playing").siblings().removeClass("playing")
-    console.log("streaming ", $a.attr("data-trackId"));
     $a.find(".wave-progress").width("0%")
     SC.stream($a.attr("data-trackId"), {
       autoPlay: true
       whileplaying: ->
         $a.find(".wave-progress").width((this.position / this.durationEstimate * 100) + "%")
       onfinish: ->
-        $li.removeClass("playing")
+#        $li.removeClass("playing")
     })
 
   e.preventDefault()
@@ -68,39 +73,16 @@ $(".record-control, .recordLink").live "click", (e) ->
       setTimer(ms)
       SCWaveform.draw(ms / 1000, level);
 
-$(".stop-control").live "click", (e) ->
+recordingDuration = 0
+$(".stop-control, .pause-control").live "click", (e) ->
   SCWaveform.finishedDraw()
   $(".reset").show()
-  SC.recordStop()
+  recordingDuration = SC.recordStop()
   setRecorded()
 
 $(".play-control").live "click", (e) ->
   setTimer(0)
   SC.recordPlay
-    progress: (ms) -> 
-      setTimer(ms)
-      density = 500
-      canvas    = SCgetCanvas($('canvas.scrubber'))
-      ctx       = canvas.getContext("2d")
-      ctxHeight = parseInt(ctx.canvas.height, 10) * 0.5
-      ctxWidth  = parseInt(ctx.canvas.width, 10)
-      wfWidth   = ctxWidth
-      counterX  = wfWidth
-      duration  = 0
-      if recordingDuration 
-        rel = Math.round((ms/recordingDuration) * wfWidth) 
-      else
-        rel = 0
- 
-      ctx.clearRect(0, 0, ctxWidth, ctxHeight);
-      ctx.canvas.width = ctxWidth;
-      if(rel > 0)
-        ctx.fillStyle = 'rgba(255, 102, 0, 0.3)';
-        ctx.fillRect(0, 10, rel, ctxHeight);
-        ctx.fillStyle = 'rgba(255, 102, 0, 1)';
-        ctx.fillRect(rel, 0, 1, ctxHeight);
-
-
     finished: setRecorded
   $(".pause-control").show().siblings().hide()
   
@@ -112,26 +94,47 @@ $("a.reset").live "click", (e) ->
   $(".rec-wave-container").hide()
   $(".widget-title").show()
   $(this).hide();
-  $(".timer").html('<a href="#" class="recordLink">Join the discussion</a>')
+  $(".timer").html('<a href="#" class="recordLink">Join the discussion!</a>')
   e.preventDefault();
   
 $("a.share").live "click", (e) -> 
-  return false if $(this).hasClass("disabled")  
+  return false if $(this).hasClass("disabled")
   SC.connect
     redirect_uri: REDIRECT_URI
     connected: () ->
+      track = 
+        title: $("#title").val()
+        sharing: "public"
+
       trackParams = 
-        track:
-          title: $("#title").val()
-          sharing: "public"
+        track: track
+      $.extend(track, {
+        state: "uploading"
+        user: {username: ""}
+        duration: 0
+        permalink_url: ""
+      })
       
+      $("ol#groupTracks li").last().remove();
+      
+      $track = $("#trackTmpl").tmpl(track).prependTo("ol#groupTracks").addClass("unfinished")
+      $track.find(".status").text("Uploading...")
       SC.recordUpload trackParams, (track) ->
-        console.log(track)
-        console.log("contribute to group")
-        $("#trackTmpl").tmpl(track).appendTo(".uploaded-track .list").addClass("uploading")
-        $(".list .track").last().remove()
+        $track.find(".status").text("Processing...")
+        $track = $("#trackTmpl").tmpl(track).replaceAll($track).addClass("unfinished")
+
+        checkState = ->
+          SC.get track.uri, (track) -> 
+            if track.state == "finished"
+              $track.find(".status").text("Pending for moderation...")
+              SC.get GR.groupUrl + "/tracks", {limit: 1}, (tracks) ->
+                if tracks[0] && tracks[0].id == track.id
+                  $track.removeClass("unfinished")
+            else
+              window.setTimeout checkState, 3000
+        window.setTimeout checkState, 3000
+
         $("#widget").addClass("recorded-track")
-        SC.put GR.groupUrl + "/contributions/" + track.id, (track) ->
-          console.log('contributed')
-          console.log(arguments)
+        SC.put GR.groupUrl + "/contributions/" + track.id, ->
+          # do nothing
   e.preventDefault();

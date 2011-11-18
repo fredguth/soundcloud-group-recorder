@@ -1,7 +1,9 @@
 (function() {
-  var CLIENT_ID, GR, REDIRECT_URI, setRecorded, setTimer;
+  var CLIENT_ID, GR, REDIRECT_URI, recordingDuration, setRecorded, setTimer;
   CLIENT_ID = "1ba7ea8a06c6bb7454a52fb018449792";
   REDIRECT_URI = "http://localhost:9999/callback.html";
+  CLIENT_ID = "7b3dc769ad5c179d5280de288dba52a9";
+  REDIRECT_URI = "http://grouprecorder.soundcloudlabs.com/callback.html";
   GR = {
     groupId: null,
     groupUrl: null
@@ -26,10 +28,14 @@
       _results = [];
       for (_i = 0, _len = tracks.length; _i < _len; _i++) {
         track = tracks[_i];
-        _results.push(trackLi = $("#trackTmpl").tmpl(track).appendTo(".track-list ol"));
+        _results.push(trackLi = $("#trackTmpl").tmpl(track).appendTo("ol#groupTracks"));
       }
       return _results;
     });
+  });
+  $(".select-all").live("click", function(e) {
+    this.select();
+    return false;
   });
   $(".trackLink").live("click", function(e) {
     var $a, $li;
@@ -40,16 +46,13 @@
       $li.removeClass("playing");
     } else {
       $li.addClass("playing").siblings().removeClass("playing");
-      console.log("streaming ", $a.attr("data-trackId"));
       $a.find(".wave-progress").width("0%");
       SC.stream($a.attr("data-trackId"), {
         autoPlay: true,
         whileplaying: function() {
           return $a.find(".wave-progress").width((this.position / this.durationEstimate * 100) + "%");
         },
-        onfinish: function() {
-          return $li.removeClass("playing");
-        }
+        onfinish: function() {}
       });
     }
     return e.preventDefault();
@@ -78,40 +81,16 @@
       }
     });
   });
-  $(".stop-control").live("click", function(e) {
+  recordingDuration = 0;
+  $(".stop-control, .pause-control").live("click", function(e) {
     SCWaveform.finishedDraw();
     $(".reset").show();
-    SC.recordStop();
+    recordingDuration = SC.recordStop();
     return setRecorded();
   });
   $(".play-control").live("click", function(e) {
     setTimer(0);
     SC.recordPlay({
-      progress: function(ms) {
-        var canvas, counterX, ctx, ctxHeight, ctxWidth, density, duration, rel, wfWidth;
-        setTimer(ms);
-        density = 500;
-        canvas = SCgetCanvas($('canvas.scrubber'));
-        ctx = canvas.getContext("2d");
-        ctxHeight = parseInt(ctx.canvas.height, 10) * 0.5;
-        ctxWidth = parseInt(ctx.canvas.width, 10);
-        wfWidth = ctxWidth;
-        counterX = wfWidth;
-        duration = 0;
-        if (recordingDuration) {
-          rel = Math.round((ms / recordingDuration) * wfWidth);
-        } else {
-          rel = 0;
-        }
-        ctx.clearRect(0, 0, ctxWidth, ctxHeight);
-        ctx.canvas.width = ctxWidth;
-        if (rel > 0) {
-          ctx.fillStyle = 'rgba(255, 102, 0, 0.3)';
-          ctx.fillRect(0, 10, rel, ctxHeight);
-          ctx.fillStyle = 'rgba(255, 102, 0, 1)';
-          return ctx.fillRect(rel, 0, 1, ctxHeight);
-        }
-      },
       finished: setRecorded
     });
     return $(".pause-control").show().siblings().hide();
@@ -123,7 +102,7 @@
     $(".rec-wave-container").hide();
     $(".widget-title").show();
     $(this).hide();
-    $(".timer").html('<a href="#" class="recordLink">Join the discussion</a>');
+    $(".timer").html('<a href="#" class="recordLink">Join the discussion!</a>');
     return e.preventDefault();
   });
   $("a.share").live("click", function(e) {
@@ -133,23 +112,48 @@
     SC.connect({
       redirect_uri: REDIRECT_URI,
       connected: function() {
-        var trackParams;
-        trackParams = {
-          track: {
-            title: $("#title").val(),
-            sharing: "public"
-          }
+        var $track, track, trackParams;
+        track = {
+          title: $("#title").val(),
+          sharing: "public"
         };
+        trackParams = {
+          track: track
+        };
+        $.extend(track, {
+          state: "uploading",
+          user: {
+            username: ""
+          },
+          duration: 0,
+          permalink_url: ""
+        });
+        $("ol#groupTracks li").last().remove();
+        $track = $("#trackTmpl").tmpl(track).prependTo("ol#groupTracks").addClass("unfinished");
+        $track.find(".status").text("Uploading...");
         return SC.recordUpload(trackParams, function(track) {
-          console.log(track);
-          console.log("contribute to group");
-          $("#trackTmpl").tmpl(track).appendTo(".uploaded-track .list").addClass("uploading");
-          $(".list .track").last().remove();
+          var checkState;
+          $track.find(".status").text("Processing...");
+          $track = $("#trackTmpl").tmpl(track).replaceAll($track).addClass("unfinished");
+          checkState = function() {
+            return SC.get(track.uri, function(track) {
+              if (track.state === "finished") {
+                $track.find(".status").text("Pending for moderation...");
+                return SC.get(GR.groupUrl + "/tracks", {
+                  limit: 1
+                }, function(tracks) {
+                  if (tracks[0] && tracks[0].id === track.id) {
+                    return $track.removeClass("unfinished");
+                  }
+                });
+              } else {
+                return window.setTimeout(checkState, 3000);
+              }
+            });
+          };
+          window.setTimeout(checkState, 3000);
           $("#widget").addClass("recorded-track");
-          return SC.put(GR.groupUrl + "/contributions/" + track.id, function(track) {
-            console.log('contributed');
-            return console.log(arguments);
-          });
+          return SC.put(GR.groupUrl + "/contributions/" + track.id, function() {});
         });
       }
     });

@@ -452,14 +452,14 @@ a.trackLink:hover .small-control-icon {
 }
 
 .playing .wave-container {
-	height: 13px;
-	width:100%;
-	padding-left:16px;
-	position: relative;
-	display: block;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+  height: 13px;
+  width:100%;
+  padding-left:16px;
+  position: relative;
+  display: block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .playing .wave-progress {
@@ -471,7 +471,7 @@ a.trackLink:hover .small-control-icon {
 .playing .wave{
   position: absolute;
 	height:100%;
-	width:100%;
+	width:98%;
 }
 
 .track-title, .track-user  {
@@ -534,18 +534,18 @@ a.trackLink:hover .small-control-icon {
   display:none;
 }
 
-.track.uploading .status {
+.track.unfinished .status {
 	color:rgb(151,151,151);
 	float:right;
 	font-style:italic;
 	display:inline;
 }
 
-.track.uploading .track-stats {
+.track.unfinished .track-stats, .track.unfinished .track-time {
 	display:none;
 }
 
-.track.uploading a.trackLink:hover  {
+.track.unfinished a.trackLink:hover  {
 	cursor:default;
 }	
 
