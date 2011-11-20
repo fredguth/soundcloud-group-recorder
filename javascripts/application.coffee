@@ -16,7 +16,7 @@ $ ->
   
   SC.get GR.groupUrl, (group) ->
     $(".groupLink").text(group.name).attr("href", group.permalink_url)
-    $("#title").val("Thoughts on " + group.name)
+    $("#title").val(group.name)
     
   SC.get GR.groupUrl + "/tracks", {limit: 5}, (tracks) ->
     #$("#trackTmpl").tmpl(tracks).appendTo(".track-list ol")
@@ -35,8 +35,10 @@ $(".trackLink").live "click", (e) ->
 
   if $li.hasClass("playing")
     $li.removeClass("playing")
+    $a.attr('title', 'Play')
   else
     $li.addClass("playing").siblings().removeClass("playing")
+    $a.attr('title', 'Stop')
     $a.find(".wave-progress").width("0%")
     SC.stream($a.attr("data-trackId"), {
       autoPlay: true
@@ -74,7 +76,7 @@ $(".record-control, .recordLink").live "click", (e) ->
       SCWaveform.draw(ms / 1000, level);
 
 recordingDuration = 0
-$(".stop-control, .pause-control").live "click", (e) ->
+$(".stop-control").live "click", (e) ->
   SCWaveform.finishedDraw()
   $(".reset").show()
   recordingDuration = SC.recordStop()
@@ -84,8 +86,7 @@ $(".play-control").live "click", (e) ->
   setTimer(0)
   SC.recordPlay
     finished: setRecorded
-  $(".pause-control").show().siblings().hide()
-  
+  $(".stop-control").show().siblings().hide()
   
 $("a.reset").live "click", (e) ->
   SC.recordStop()
@@ -94,7 +95,7 @@ $("a.reset").live "click", (e) ->
   $(".rec-wave-container").hide()
   $(".widget-title").show()
   $(this).hide();
-  $(".timer").html('<a href="#" class="recordLink">Join the discussion!</a>')
+  $(".timer").html('<a href="#" class="recordLink">Record and share!</a>')
   e.preventDefault();
   
 $("a.share").live "click", (e) -> 

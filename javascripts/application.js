@@ -19,7 +19,7 @@
     GR.groupUrl = params.url;
     SC.get(GR.groupUrl, function(group) {
       $(".groupLink").text(group.name).attr("href", group.permalink_url);
-      return $("#title").val("Thoughts on " + group.name);
+      return $("#title").val(group.name);
     });
     return SC.get(GR.groupUrl + "/tracks", {
       limit: 5
@@ -44,8 +44,10 @@
     SC.streamStopAll();
     if ($li.hasClass("playing")) {
       $li.removeClass("playing");
+      $a.attr('title', 'Play');
     } else {
       $li.addClass("playing").siblings().removeClass("playing");
+      $a.attr('title', 'Stop');
       $a.find(".wave-progress").width("0%");
       SC.stream($a.attr("data-trackId"), {
         autoPlay: true,
@@ -82,7 +84,7 @@
     });
   });
   recordingDuration = 0;
-  $(".stop-control, .pause-control").live("click", function(e) {
+  $(".stop-control").live("click", function(e) {
     SCWaveform.finishedDraw();
     $(".reset").show();
     recordingDuration = SC.recordStop();
@@ -93,7 +95,7 @@
     SC.recordPlay({
       finished: setRecorded
     });
-    return $(".pause-control").show().siblings().hide();
+    return $(".stop-control").show().siblings().hide();
   });
   $("a.reset").live("click", function(e) {
     SC.recordStop();
@@ -102,7 +104,7 @@
     $(".rec-wave-container").hide();
     $(".widget-title").show();
     $(this).hide();
-    $(".timer").html('<a href="#" class="recordLink">Join the discussion!</a>');
+    $(".timer").html('<a href="#" class="recordLink">Record and share!</a>');
     return e.preventDefault();
   });
   $("a.share").live("click", function(e) {
