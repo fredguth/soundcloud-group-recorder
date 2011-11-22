@@ -462,6 +462,20 @@ a.trackLink:hover .small-control-icon {
 	box-sizing: border-box;
 }
 
+.wave-inner-wrapper {
+	position: relative;
+	background: rgb(44,44,44); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgb(44,44,44) 0%, rgb(56,56,56) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(44,44,44)), color-stop(100%,rgb(56,56,56))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgb(44,44,44) 0%,rgb(56,56,56) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgb(44,44,44) 0%,rgb(56,56,56) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgb(44,44,44) 0%,rgb(56,56,56) 100%); /* IE10+ */
+	background: linear-gradient(top,  rgb(44,44,44) 0%,rgb(56,56,56) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c2c2c', endColorstr='#383838',GradientType=0 ); /* IE6-9 */
+	width: 100%;
+	height: 100%;	
+}
+
 .playing .wave-progress {
   background: rgb(255,76,0);
   height: 100%;
