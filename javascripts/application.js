@@ -118,7 +118,14 @@
         track = {
           title: $("#title").val(),
           sharing: "public",
-          downloadable: true
+          downloadable: true,
+          shared_to: {
+            connections: [
+              {
+                no: 0
+              }
+            ]
+          }
         };
         trackParams = {
           track: track

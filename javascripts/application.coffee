@@ -107,6 +107,7 @@ $("a.share").live "click", (e) ->
         title: $("#title").val()
         sharing: "public"
         downloadable: true
+        shared_to: {connections: [no: 0]}
 
       trackParams = 
         track: track
