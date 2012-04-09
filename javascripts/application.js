@@ -117,7 +117,8 @@
         var $track, track, trackParams;
         track = {
           title: $("#title").val(),
-          sharing: "public"
+          sharing: "public",
+          downloadable: true
         };
         trackParams = {
           track: track
