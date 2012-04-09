@@ -9,18 +9,22 @@
 	<link href="http://importer.soundcloudlabs.com/stylesheets/labs.css" media="screen" rel="stylesheet" type="text/css" />
 	<script>
 	  $(function(){
+      SC.initialize({
+        client_id: "YOUR_CLIENT_ID"
+      })
+
+
 	    $(".select-all").click(function(){
 	      this.select();
 	      return false;
 	    });
 	    $("#groupUrl").change(function(){
-	      SC.get("/resolve", {url: $(this).val(), "_status_code_map[302]": 200}, function(response, error){
+	      SC.get("/resolve", {url: $(this).val()}, function(track, error){
           var embedCode;
-	        if(error){
+	        if(error)http://grouprecorder.soundcloudlabs.com/
 	          embedCode = "Sorry this is not a valid SoundCloud Group Link.";
 	        }else{
-	          var url = response.location.replace(".json", "");
-	          embedCode = '<iframe width="600" height="230" scrolling="no" frameborder="no" src="/embed.html?url='+ url +'"></iframe>';
+	          embedCode = '<iframe width="600" height="230" scrolling="no" frameborder="no" src="' + window.location.toString() + 'embed.html?url='+ encodeURIComponent(track.uri) +'"></iframe>';
 	        }
 	        $("#embedCode").val(embedCode);
 	        $("#preview").html(embedCode);
@@ -57,7 +61,7 @@
         <input type="text" id="groupUrl" class="select-all" value="http://soundcloud.com/groups/group-recorder-test" />
       </p>
       <p>Step 2: Copy the embed code and add it to your site:
-        <input type="text" id="embedCode" class="select-all" readonly="readonly" value='<iframe width="600" height="230" scrolling="no" frameborder="no" src="/embed.html?url=http://api.soundcloud.com/groups/57713"></iframe>' />
+        <input type="text" id="embedCode" class="select-all" readonly="readonly" value='<iframe width="600" height="230" scrolling="no" frameborder="no" src="http://grouprecorder.soundcloudlabs.com/embed.html?url=http://api.soundcloud.com/groups/57713"></iframe>' />
       </p>
       
       <p>Preview:</p>
