@@ -21,7 +21,7 @@
 	    $("#groupUrl").change(function(){
 	      SC.get("/resolve", {url: $(this).val()}, function(track, error){
           var embedCode;
-	        if(error)
+	        if(error){
 	          embedCode = "Sorry this is not a valid SoundCloud Group Link.";
 	        }else{
 	          embedCode = '<iframe width="600" height="230" scrolling="no" frameborder="no" src="' + window.location.toString() + 'embed.html?url='+ encodeURIComponent(track.uri) +'"></iframe>';
