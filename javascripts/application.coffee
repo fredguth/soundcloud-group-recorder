@@ -6,7 +6,11 @@ REDIRECT_URI = "http://grouprecorder.soundcloudlabs.com/callback.html"
 GR =
   groupId: null
   groupUrl: null
-  
+  track: (category, action) ->
+    _gaq.push(['_trackEvent', category, action])
+ 
+
+
 $ ->
   SC.initialize
     client_id: CLIENT_ID
@@ -17,11 +21,10 @@ $ ->
   SC.get GR.groupUrl, (group) ->
     $(".groupLink").text(group.name).attr("href", group.permalink_url)
     $("#title").val(group.name)
-    
-  SC.get GR.groupUrl + "/tracks", {limit: 5}, (tracks) ->
-    #$("#trackTmpl").tmpl(tracks).appendTo(".track-list ol")
-    for track in tracks
-      trackLi = $("#trackTmpl").tmpl(track).appendTo("ol#groupTracks")
+    SC.get GR.groupUrl + "/tracks", {limit: 5}, (tracks) ->
+      #$("#trackTmpl").tmpl(tracks).appendTo(".track-list ol")
+      for track in tracks
+        trackLi = $("#trackTmpl").tmpl(track).appendTo("ol#groupTracks")
 
 $(".select-all").live "click", (e) ->
   this.select()
@@ -62,11 +65,14 @@ setTimer = (ms) ->
   $(".timer").text(SC.Helper.millisecondsToHMS(ms))
 
 $(".record-control, .recordLink").live "click", (e) ->
+
+  GR.track("Track", "wantRecord")
   setTimer(0)
 
   $(".widget-title").hide()
   SC.record
     start: () ->
+      GR.track("Track", "recording")
       SCWaveform.reset() #TODO REMOVE ME
       $(".rec-wave-container").show()
       SCWaveform.initCanvas()
@@ -77,6 +83,8 @@ $(".record-control, .recordLink").live "click", (e) ->
 
 recordingDuration = 0
 $(".stop-control").live "click", (e) ->
+  GR.track("Track", "recorded")
+
   SCWaveform.finishedDraw()
   $(".reset").show()
   recordingDuration = SC.recordStop()
@@ -89,6 +97,7 @@ $(".play-control").live "click", (e) ->
   $(".stop-control").show().siblings().hide()
   
 $("a.reset").live "click", (e) ->
+  GR.track("Track", "reset")
   SC.recordStop()
   $('.share').addClass('disabled');
   $(".record-control").show().siblings().hide()
@@ -99,10 +108,12 @@ $("a.reset").live "click", (e) ->
   e.preventDefault();
   
 $("a.share").live "click", (e) -> 
+  GR.track("Track", "wantUpload")
   return false if $(this).hasClass("disabled")
   SC.connect
     redirect_uri: REDIRECT_URI
     connected: () ->
+      GR.track("Track", "connected")
       track = 
         title: $("#title").val()
         sharing: "public"
@@ -123,6 +134,8 @@ $("a.share").live "click", (e) ->
       $track = $("#trackTmpl").tmpl(track).prependTo("ol#groupTracks").addClass("unfinished")
       $track.find(".status").text("Uploading...")
       SC.recordUpload trackParams, (track) ->
+        GR.track("Track", "upload")
+
         $track.find(".status").text("Processing...")
         $track = $("#trackTmpl").tmpl(track).replaceAll($track).addClass("unfinished")
 
@@ -139,5 +152,5 @@ $("a.share").live "click", (e) ->
 
         $("#widget").addClass("recorded-track")
         SC.put GR.groupUrl + "/contributions/" + track.id, ->
-          # do nothing
+          GR.track("Track", "contributed")
   e.preventDefault();

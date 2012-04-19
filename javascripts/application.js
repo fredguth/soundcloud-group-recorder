@@ -6,7 +6,10 @@
   REDIRECT_URI = "http://grouprecorder.soundcloudlabs.com/callback.html";
   GR = {
     groupId: null,
-    groupUrl: null
+    groupUrl: null,
+    track: function(category, action) {
+      return _gaq.push(['_trackEvent', category, action]);
+    }
   };
   $(function() {
     var params;
@@ -17,20 +20,20 @@
       decodeQuery: true
     }).query;
     GR.groupUrl = params.url;
-    SC.get(GR.groupUrl, function(group) {
+    return SC.get(GR.groupUrl, function(group) {
       $(".groupLink").text(group.name).attr("href", group.permalink_url);
-      return $("#title").val(group.name);
-    });
-    return SC.get(GR.groupUrl + "/tracks", {
-      limit: 5
-    }, function(tracks) {
-      var track, trackLi, _i, _len, _results;
-      _results = [];
-      for (_i = 0, _len = tracks.length; _i < _len; _i++) {
-        track = tracks[_i];
-        _results.push(trackLi = $("#trackTmpl").tmpl(track).appendTo("ol#groupTracks"));
-      }
-      return _results;
+      $("#title").val(group.name);
+      return SC.get(GR.groupUrl + "/tracks", {
+        limit: 5
+      }, function(tracks) {
+        var track, trackLi, _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = tracks.length; _i < _len; _i++) {
+          track = tracks[_i];
+          _results.push(trackLi = $("#trackTmpl").tmpl(track).appendTo("ol#groupTracks"));
+        }
+        return _results;
+      });
     });
   });
   $(".select-all").live("click", function(e) {
@@ -68,10 +71,12 @@
     return $(".timer").text(SC.Helper.millisecondsToHMS(ms));
   };
   $(".record-control, .recordLink").live("click", function(e) {
+    GR.track("Track", "wantRecord");
     setTimer(0);
     $(".widget-title").hide();
     return SC.record({
       start: function() {
+        GR.track("Track", "recording");
         SCWaveform.reset();
         $(".rec-wave-container").show();
         SCWaveform.initCanvas();
@@ -85,6 +90,7 @@
   });
   recordingDuration = 0;
   $(".stop-control").live("click", function(e) {
+    GR.track("Track", "recorded");
     SCWaveform.finishedDraw();
     $(".reset").show();
     recordingDuration = SC.recordStop();
@@ -98,6 +104,7 @@
     return $(".stop-control").show().siblings().hide();
   });
   $("a.reset").live("click", function(e) {
+    GR.track("Track", "reset");
     SC.recordStop();
     $('.share').addClass('disabled');
     $(".record-control").show().siblings().hide();
@@ -108,6 +115,7 @@
     return e.preventDefault();
   });
   $("a.share").live("click", function(e) {
+    GR.track("Track", "wantUpload");
     if ($(this).hasClass("disabled")) {
       return false;
     }
@@ -115,6 +123,7 @@
       redirect_uri: REDIRECT_URI,
       connected: function() {
         var $track, track, trackParams;
+        GR.track("Track", "connected");
         track = {
           title: $("#title").val(),
           sharing: "public",
@@ -143,6 +152,7 @@
         $track.find(".status").text("Uploading...");
         return SC.recordUpload(trackParams, function(track) {
           var checkState;
+          GR.track("Track", "upload");
           $track.find(".status").text("Processing...");
           $track = $("#trackTmpl").tmpl(track).replaceAll($track).addClass("unfinished");
           checkState = function() {
@@ -163,7 +173,9 @@
           };
           window.setTimeout(checkState, 3000);
           $("#widget").addClass("recorded-track");
-          return SC.put(GR.groupUrl + "/contributions/" + track.id, function() {});
+          return SC.put(GR.groupUrl + "/contributions/" + track.id, function() {
+            return GR.track("Track", "contributed");
+          });
         });
       }
     });
